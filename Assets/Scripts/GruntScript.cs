@@ -10,6 +10,8 @@ public class GruntScript : MonoBehaviour
     private SpriteRenderer sprite;
     private Animator animator;
     private GameObject john;
+    private Rigidbody2D rb;
+    private CapsuleCollider2D collider;
 
     public GameObject bullet;
     public int health = 5;
@@ -20,6 +22,8 @@ public class GruntScript : MonoBehaviour
     {
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        collider = GetComponent<CapsuleCollider2D>();
         john = GameObject.FindWithTag("Player");
     }
 
@@ -63,6 +67,8 @@ public class GruntScript : MonoBehaviour
 
         if (health <= 0)
         {
+            rb.gravityScale = 0;
+            Destroy(collider);
             isDied = true;
             animator.SetBool("isDied", isDied);
 

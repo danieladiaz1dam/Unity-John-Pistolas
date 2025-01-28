@@ -9,12 +9,12 @@ public class JohnMovement : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Animator animator;
-    private TextMeshProUGUI txtMesh;
+    private HUDScript hudScript;
 
     public GameObject bullet;
     public int health = 5;
     public float speed = 1;
-    public float jumpForce = 150;
+    public float jumpForce = 180;
 
     public AudioClip jumpSound, hurtSound;
 
@@ -23,8 +23,7 @@ public class JohnMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        txtMesh = GetComponent<TextMeshProUGUI>();
-        txtMesh.text = "ojavjne";
+        hudScript = GameObject.FindWithTag("HealthBar").GetComponent<HUDScript>();
     }
 
     void Update()
@@ -33,15 +32,20 @@ public class JohnMovement : MonoBehaviour
 
         animator.SetBool("isRunning", horizonal != 0);
 
-        if (Input.GetKeyDown(KeyCode.W) && isGrounded())
+        if (health>0)
+        { 
+            if (Input.GetKeyDown(KeyCode.W) && isGrounded())
             Jump();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            Shoot();
+            if (Input.GetKeyDown(KeyCode.Space))
+                Shoot();
+        }
     }
 
     private void FixedUpdate()
     {
+        if (health < 0) return;
+
         rb.linearVelocity = new Vector2(horizonal, rb.linearVelocityY);
 
         if (horizonal < 0)
@@ -80,6 +84,7 @@ public class JohnMovement : MonoBehaviour
         if (isDied) return;
 
         health -= 1;
+        hudScript.updateHealth(health);
 
         if (health <= 0)
         {

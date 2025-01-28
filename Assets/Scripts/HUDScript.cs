@@ -1,21 +1,18 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUDScript : MonoBehaviour
 {
-    private JohnMovement john;
-    private int health;
-
-    public Sprite heartSprite;
+    private Image img;
+    public Sprite[] heartSprites;
 
     private void Start()
     {
-        john = GameObject.FindGameObjectWithTag("Player").GetComponent<JohnMovement>(); ;
-        health = john.health;
+        img = GetComponent<Image>();
     }
 
-    public void updateHealth()
+    public void updateHealth(int heatlh)
     {
-        health = john.health;
-
+        img.sprite = heartSprites[heartSprites.Length - heatlh - 1];
     }
 }
